@@ -58,6 +58,7 @@ class TestBaseModelDocs(unittest.TestCase):
 
 class TestBaseModel(unittest.TestCase):
     """Test the BaseModel class"""
+
     def test_instantiation(self):
         """Test that object is correctly created"""
         inst = BaseModel()
@@ -159,4 +160,3 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(old_created_at, new_created_at)
         self.assertTrue(mock_storage.new.called)
         self.assertTrue(mock_storage.save.called)
-
