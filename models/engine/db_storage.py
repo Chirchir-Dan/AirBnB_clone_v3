@@ -90,12 +90,10 @@ class DBStorage:
 
         # Fetch all objects of the given class
         objects = models.storage.all(cls)
-    
+
         # Construct the key and attempt to retrieve the object
         obj_key = "{}.{}".format(cls.__name__, id)
         return objects.get(obj_key)
-
-
 
     def count(self, cls=None):
         """Returns the number of objects in storage matching
@@ -108,4 +106,5 @@ class DBStorage:
             return len(all_objects)
         else:
             # Filter objects by class and return the count
-            return sum(1 for obj in all_objects.values() if isinstance(obj, cls))
+            return sum(1 for obj in all_objects.values()
+                       if isinstance(obj, cls))
