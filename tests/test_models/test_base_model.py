@@ -159,3 +159,34 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(old_created_at, new_created_at)
         self.assertTrue(mock_storage.new.called)
         self.assertTrue(mock_storage.save.called)
+
+
+    def test_get_method(self):
+        """Test getting an object."""
+        # Assuming User is a mapped class
+        user = User(name="John Doe", email="john@example.com")
+        self.db.add(user)
+        self.db.commit()
+
+        retrieved_user = self.db.get(User, user.id)
+        self.assertEqual(retrieved_user.name, "John Doe")
+
+        # Test with non-existing ID
+        non_existing_user = self.db.get(User, "non_existing_id")
+        self.assertIsNone(non_existing_user)
+
+    def test_count_method(self):
+        """Test counting objects."""
+        # Add multiple users
+        self.db.add_all([User(name=f"User{i}", email=f"user{i}@example.com") for i in range(5)])
+        self.db.commit()
+
+        # Test count for User class
+        user_count = self.db.count(User)
+        self.assertEqual(user_count, 5)
+
+        # Test total count
+        total_count = self.db.count()
+        self.assertGreaterEqual(total_count, 5)
+
+
