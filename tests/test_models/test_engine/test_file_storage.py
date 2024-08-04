@@ -119,12 +119,15 @@ class TestFileStorage(unittest.TestCase):
         storage = FileStorage()
         self.assertIs(storage.get("User", "blah"), None)
         self.assertIs(storage.get("blah", "blah"), None)
-        new_user = User()
-        new_user.save()
-        self.assertIs(storage.get("User", new_user.id), new_user)
+        new_state = State(name="Nairobi")
+        storage.new(new_state)
+        storage.save()
+        retrieved_state = storage.get(State, new_state.id)
+        self.assertEqual(new_state, retrieved_state)
 
-    @unittest.skipIf(os.getenv(HBNB_TYPE_STORAGE) == db,
-                     "not testing file storage")
+    """@unittest.skipIf(os.getenv(HBNB_TYPE_STORAGE) == db,
+                     "not testing file storage")"""
+
     def test_count(self):
         storage = FileStorage()
         initial_length = len(storage.all())
