@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-States the view module for the API
+City API module
 """
 from flask import jsonify, request, abort, make_response
 from api.v1.views import app_views
