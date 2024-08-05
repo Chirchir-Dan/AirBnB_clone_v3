@@ -84,10 +84,10 @@ def update_place(place_id):
     return make_response(jsonify(place.to_dict()), 200)
 
 
-"""
+'''
 @app_views.route('/places_search', methods=['POST'], strict_slashes=False)
 def places_search():
-    Search for Place objects based on criteria
+    #Search for Place objects based on criteria
     if not request.is_json:
         abort(400, description="Not a JSON")
 
@@ -137,13 +137,12 @@ def places_search():
             amenity.id in place.amenity_ids for amenity
             in storage.all(Amenity).values() if amenity.id in amenity_ids)}
 
-    return jsonify([place.to_dict() for place in filtered_places])"""
-"""
+    return jsonify([place.to_dict() for place in filtered_places])
+'''
 
 
 def places_search():
-    """
-    Retrieves all Place objects depending of the JSON in the
+    """Retrieves all Place objects depending of the JSON in the
     body of the request
     """
     body_r = request.get_json()
