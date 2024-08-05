@@ -84,10 +84,9 @@ def update_place(place_id):
     return make_response(jsonify(place.to_dict()), 200)
 
 
-"""
 @app_views.route('/places_search', methods=['POST'], strict_slashes=False)
 def places_search():
-    #Search for Place objects based on criteria
+    """Search for Place objects based on criteria"""
     if not request.is_json:
         abort(400, description="Not a JSON")
 
@@ -136,57 +135,5 @@ def places_search():
         filtered_places = {place for place in filtered_places if all(
             amenity.id in place.amenity_ids for amenity
             in storage.all(Amenity).values() if amenity.id in amenity_ids)}
-
-    return jsonify([place.to_dict() for place in filtered_places])
-"""
-
-
-@app_views.route('/places_search', methods=['POST'], strict_slashes=False)
-def places_search():
-    """Search for Place objects based on criteria"""
-    if not request.is_json:
-        abort(400, description="Not a JSON")
-
-    search_criteria = request.get_json()
-
-    # Extract search criteria
-    states = search_criteria.get('states', [])
-    cities = search_criteria.get('cities', [])
-    amenities = search_criteria.get('amenities', [])
-
-    # Validate search criteria types
-    if (not isinstance(states, list) or not isinstance(cities, list) or
-            not isinstance(amenities, list)):
-        abort(400, description="Not a JSON")
-
-    # Get all Place objects
-    all_places = storage.all(Place).values()
-    filtered_places = set()
-
-    if not states and not cities and not amenities:
-        # Return all places if no criteria are provided
-        return jsonify([place.to_dict() for place in all_places])
-
-    if states:
-        # Find all cities in the specified states
-        state_ids = set(states)
-        city_ids = set()
-        for state_id in state_ids:
-            state = storage.get(State, state_id)
-            if state:
-                city_ids.update(city.id for city in state.cities)
-        # Find all places in the specififed cities from states
-        filtered_places.update(
-                place for place in all_places if place.city_id in city_ids)
-
-    if cities:
-        """Add places from specific cities, override state if same cities are
-        mentioned"""
-        amenity_ids = set(amenities)
-        all_amenities = storage.all(Amenity).values()
-        filtered_places = {place for place in filtered_places if all(
-            amenity.id in place.amenity_ids for amenity in all_amenities if
-            amenity.id in amenity_ids)
-        }
 
     return jsonify([place.to_dict() for place in filtered_places])
