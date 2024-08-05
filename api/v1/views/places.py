@@ -138,6 +138,7 @@ def places_search():
             in storage.all(Amenity).values() if amenity.id in amenity_ids)}
 
     return jsonify([place.to_dict() for place in filtered_places])"""
+"""
 
 
 def places_search():
